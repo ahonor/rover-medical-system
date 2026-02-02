@@ -75,7 +75,7 @@ jobs:
             -i rover-medical-evidence-collection/ansible/inventory/demo.ini \
             rover-medical-evidence-collection/ansible/playbooks/collect-evidence.yml \
             -e "release=${RELEASE}" \
-            -e "rover_system_root=${GITHUB_WORKSPACE}
+            -e "rover_system_root=${GITHUB_WORKSPACE}"
 
       - name: NAPE - Start Evidence Collection
         shell: bash
