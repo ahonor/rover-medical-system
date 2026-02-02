@@ -90,11 +90,12 @@ jobs:
           echo "=== Workspace top level ==="
           tree -L 6 "${GITHUB_WORKSPACE}"
 
-          echo "=== Rover medical system (where evidence should land) ==="
-          tree -L 8 "${GITHUB_WORKSPACE}/rover-medical-system/${RELEASE}" || true
-
-          echo "=== Runtime evidence output ==="
-          tree -L 8 "${GITHUB_WORKSPACE}/rover-medical-system/${RELEASE}/evidence/runtime" || true
+          echo "=== Evidence landing zone ==="
+          if command -v tree >/dev/null 2>&1; then
+            tree -L 8 "${GITHUB_WORKSPACE}/${RELEASE}/evidence/runtime" || true
+          else
+            find "${GITHUB_WORKSPACE}/${RELEASE}/evidence/runtime" -maxdepth 8 -print || true
+          fi
 
       - name: NAPE - Start Evidence Collection
         shell: bash
