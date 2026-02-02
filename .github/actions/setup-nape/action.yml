@@ -1,5 +1,5 @@
-name: Setup NAPE CLI
-description: Download and install the NAPE CLI for use in workflows
+name: Setup NAPE Tooling
+description: Download and install the NAPE CLI binary and install the NAPE Evaluator CLI via pip.
 
 inputs:
   version:
@@ -29,10 +29,31 @@ runs:
         chmod +x nape
         sudo mv nape /usr/local/bin/nape
 
-    - name: Verify NAPE installation
+    - name: Install NAPE Evaluator CLI (pip)
+      shell: bash
+      run: |
+        set -euo pipefail
+
+        python3 -m pip install --upgrade pip
+        pip install nape
+
+    - name: Verify NAPE CLI installation
       shell: bash
       run: |
         set -euo pipefail
 
         command -v nape
-        nape --help || true
+        nape --help >/dev/null || true
+
+    - name: Verify NAPE Evaluator installation
+      shell: bash
+      run: |
+        set -euo pipefail
+
+        command -v nape-eval
+
+        आउट="$(nape-eval --check-install || true)"
+        echo "${OUT}"
+
+        # Verify expected success message is present
+        echo "${OUT}" | grep -F "NAPE Evaluator CLI is installed and working." >/dev/null
