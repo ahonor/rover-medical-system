@@ -25,7 +25,6 @@ runs:
       shell: bash
       run: |
         set -euo pipefail
-
         chmod +x nape
         sudo mv nape /usr/local/bin/nape
 
@@ -35,13 +34,15 @@ runs:
         set -euo pipefail
 
         python3 -m pip install --upgrade pip
-        pip install nape
+        python3 -m pip install nape
+
+        # Ensure user-level pip bin directory is on PATH for later steps in this job
+        echo "$HOME/.local/bin" >> "$GITHUB_PATH"
 
     - name: Verify NAPE CLI installation
       shell: bash
       run: |
         set -euo pipefail
-
         command -v nape
         nape --help >/dev/null || true
 
@@ -52,7 +53,7 @@ runs:
 
         command -v nape-eval
 
-        आउट="$(nape-eval --check-install || true)"
+        OUT="$(nape-eval --check-install || true)"
         echo "${OUT}"
 
         # Verify expected success message is present
