@@ -67,8 +67,6 @@ jobs:
 
 
           # Run the playbook from the evidence collection repo
-          # It should read rover-medical-system/${RELEASE} as the "canned" source
-          # and write collected artifacts into rover-medical-system/${RELEASE}/evidence/runtime/remote/...
           ansible-playbook -vvv \
             rover-medical-evidence-collection/ansible/playbooks/collect-evidence.yml \
             -e "release=${RELEASE}" \
