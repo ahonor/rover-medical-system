@@ -13,10 +13,10 @@ on:
       nape_version:
         description: "NAPE CLI version to install"
         required: false
-        default: "1.1.1"
+        default: "1.1.0"
 
 jobs:
-  assurance_pipeline:
+  assured_release:
     runs-on: ubuntu-latest
 
     env:
