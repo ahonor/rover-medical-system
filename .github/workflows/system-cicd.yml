@@ -68,13 +68,22 @@ jobs:
         run: |
           set -euo pipefail
 
+          cat > rover-medical-evidence-collection/ansible/ansible.cfg <<'CFG'
+          [defaults]
+          roles_path = ./roles
+          inventory = ./inventory/demo.ini
+          host_key_checking = False
+          retry_files_enabled = False
+          CFG
+
+          export ANSIBLE_CONFIG="${GITHUB_WORKSPACE}/rover-medical-evidence-collection/ansible/ansible.cfg"
+
+
           # Run the playbook from the evidence collection repo
           # It should read rover-medical-system/${RELEASE} as the "canned" source
           # and write collected artifacts into rover-medical-system/${RELEASE}/evidence/runtime/remote/...
           ansible-playbook \
-            -i rover-medical-evidence-collection/ansible/inventory/demo.ini \
             rover-medical-evidence-collection/ansible/playbooks/collect-evidence.yml \
-            --roles-path rover-medical-evidence-collection/ansible/roles \
             -e "release=${RELEASE}" \
             -e "rover_system_root=${GITHUB_WORKSPACE}/rover-medical-system"
 
