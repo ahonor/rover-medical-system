@@ -30,7 +30,7 @@ jobs:
 
       - name: Resolve release
         id: rel
-        uses: ./.github/actions/resolve-release
+        uses: ./.github/actions/determine-release
 
       - name: Show release
         run: echo "Release is ${{ steps.rel.outputs.release }}"
