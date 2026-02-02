@@ -28,6 +28,12 @@ jobs:
       - name: Checkout source
         uses: actions/checkout@v4
 
+      - name: Checkout evidence collection (Ansible) repo
+        uses: actions/checkout@v4
+        with:
+          repository: attestify/rover-medical-evidence-collection
+          path: rover-medical-evidence-collection
+
       - name: Resolve release
         id: rel
         uses: ./.github/actions/determine-release
@@ -42,6 +48,27 @@ jobs:
         uses: ./.github/actions/setup-nape
         with:
           version: 1.1.0
+
+      - name: Install Ansible
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m pip install --upgrade pip
+          python3 -m pip install ansible
+
+      - name: Aggregate Evidence from other parts of Rover Medical System
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          # Run the playbook from the evidence collection repo
+          # It should read rover-medical-system/${RELEASE} as the "canned" source
+          # and write collected artifacts into rover-medical-system/${RELEASE}/evidence/runtime/remote/...
+          ansible-playbook \
+            -i rover-medical-evidence-collection/ansible/inventory/demo.ini \
+            rover-medical-evidence-collection/ansible/playbooks/collect-evidence.yml \
+            -e "release=${RELEASE}" \
+            -e "rover_system_root=${GITHUB_WORKSPACE}/rover-medical-system"
 
       - name: NAPE - Start Evidence Collection
         shell: bash
@@ -62,7 +89,6 @@ jobs:
             --file-path "pet-medicine-app/app-config.toml"
 
           nape collect report
-
 
       - name: Upload NAPE run directory
         uses: actions/upload-artifact@v4
