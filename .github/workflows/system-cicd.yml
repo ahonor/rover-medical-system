@@ -62,3 +62,11 @@ jobs:
             --file-path "pet-medicine-app/app-config.toml"
 
           nape collect report
+
+
+      - name: Upload NAPE run directory
+        uses: actions/upload-artifact@v4
+        with:
+          name: rover-medical-system-${{ env.RELEASE }}
+          path: |
+            nrn*
