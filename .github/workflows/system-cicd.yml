@@ -88,7 +88,7 @@ jobs:
             -e "rover_system_root=${GITHUB_WORKSPACE}"
 
           echo "=== Workspace top level ==="
-          tree -L 6 "${GITHUB_WORKSPACE}"
+          tree -L 8 "${GITHUB_WORKSPACE}"
 
       - name: NAPE - Start Evidence Collection
         shell: bash
