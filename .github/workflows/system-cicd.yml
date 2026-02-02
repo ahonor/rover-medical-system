@@ -74,6 +74,9 @@ jobs:
           inventory = ./inventory/demo.ini
           host_key_checking = False
           retry_files_enabled = False
+          stdout_callback = yaml
+          display_args_to_stdout = True
+          bin_ansible_callbacks = True
           CFG
 
           export ANSIBLE_CONFIG="${GITHUB_WORKSPACE}/rover-medical-evidence-collection/ansible/ansible.cfg"
@@ -85,7 +88,8 @@ jobs:
           ansible-playbook -vvv \
             rover-medical-evidence-collection/ansible/playbooks/collect-evidence.yml \
             -e "release=${RELEASE}" \
-            -e "rover_system_root=${GITHUB_WORKSPACE}"
+            -e "rover_system_root=${GITHUB_WORKSPACE}" \
+            --list-tasks
 
           echo "=== Workspace top level ==="
           tree -L 8 "${GITHUB_WORKSPACE}"
