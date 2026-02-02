@@ -33,9 +33,32 @@ jobs:
         uses: ./.github/actions/determine-release
 
       - name: Show release
-        run: echo "Release is ${{ steps.rel.outputs.release }}"
+        run: |
+          set -euo pipefail
+          echo "Release output is: ${{ steps.rel.outputs.release }}"
+          echo "RELEASE env var is: ${RELEASE}"
 
       - name: Install NAPE CLI
         uses: ./.github/actions/setup-nape
         with:
           version: 1.1.0
+
+      - name: NAPE - Start Evidence Collection
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          SUBJECT_ID=$(date +%s%3N)
+
+          nape collect start \
+            --subject "nrn:procedure:rover-medical/rover-medicine-system"  \
+            --subject-id "$SUBJECT_ID" \
+            --procedure-link "https://github.com/attestify/rover-medical-catalog.git" \
+            --procedure-directory "rover-mediical-system/${RELEASE}" \
+            --meta system-owner "Bill Bensing"
+
+          nape collect evidence \
+            --control-activity "pet-medicine-app" \
+            --file-path "pet-medicine-app/app-config.toml"
+
+          nape collect report
