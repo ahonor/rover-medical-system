@@ -1,0 +1,52 @@
+name: Determine Current Release Njmber
+description: Read the RELEASE file and export RELEASE=release-<n> to the GitHub Actions environment.
+
+inputs:
+  release_file:
+    description: "Path to the RELEASE file"
+    required: false
+    default: "RELEASE"
+
+outputs:
+  release:
+    description: "Resolved release value like release-1, release-2"
+    value: ${{ steps.resolve.outputs.release }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Resolve release from file
+      id: resolve
+      shell: bash
+      run: |
+        set -euo pipefail
+
+        RELEASE_FILE="${{ inputs.release_file }}"
+
+        if [ ! -f "${RELEASE_FILE}" ]; then
+          echo "RELEASE file not found at: ${RELEASE_FILE}"
+          exit 1
+        fi
+
+        RELEASE_NUM="$(head -n 1 "${RELEASE_FILE}" | tr -d '[:space:]')"
+
+        if [ -z "${RELEASE_NUM}" ]; then
+          echo "RELEASE file is empty: ${RELEASE_FILE}"
+          exit 1
+        fi
+
+        # Optional: enforce numeric only (uncomment if desired)
+        # if ! [[ "${RELEASE_NUM}" =~ ^[0-9]+$ ]]; then
+        #   echo "Invalid RELEASE number: ${RELEASE_NUM}"
+        #   exit 1
+        # fi
+
+        RELEASE_VALUE="release-${RELEASE_NUM}"
+
+        echo "Resolved release: ${RELEASE_VALUE}"
+
+        # Export as env var for all subsequent steps
+        echo "RELEASE=${RELEASE_VALUE}" >> "$GITHUB_ENV"
+
+        # Also expose as an action output for workflow expressions
+        echo "release=${RELEASE_VALUE}" >> "$GITHUB_OUTPUT"

@@ -1,0 +1,40 @@
+name: Rover Medical System - CI/CD
+
+on:
+  push:
+    branches: ["main"]
+
+  workflow_dispatch:
+    inputs:
+      release:
+        description: "Demo release to run (release-1, release-2, release-3...)"
+        required: true
+        default: "release-1"
+      nape_version:
+        description: "NAPE CLI version to install"
+        required: false
+        default: "1.1.1"
+
+jobs:
+  assurance_pipeline:
+    runs-on: ubuntu-latest
+
+    env:
+      # Default release when this runs from a push (no inputs context)
+      RELEASE: ${{ inputs.release || 'release-1' }}
+      SUBJECT_ID: ${{ github.run_id }}
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Resolve release
+        id: rel
+
+      - name: Show release
+        run: echo "Release is ${{ steps.rel.outputs.release }}"
+
+      - name: Install NAPE CLI
+        uses: ./.github/actions/setup-nape
+        with:
+          version: ${{ inputs.nape_version || '1.1.1' }}

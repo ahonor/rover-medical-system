@@ -1,0 +1,38 @@
+name: Setup NAPE CLI
+description: Download and install the NAPE CLI for use in workflows
+
+inputs:
+  version:
+    description: "NAPE CLI version to install"
+    required: false
+    default: "1.1.1"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Download NAPE CLI
+      shell: bash
+      run: |
+        set -euo pipefail
+
+        NAPE_VERSION="${{ inputs.version }}"
+        NAPE_URL="https://repo.napecentral.com/nape-cli/${NAPE_VERSION}/linux-gnu/x86_64/nape"
+
+        echo "Downloading NAPE CLI version ${NAPE_VERSION}"
+        curl -fsSL "${NAPE_URL}" -o nape
+
+    - name: Install NAPE CLI
+      shell: bash
+      run: |
+        set -euo pipefail
+
+        chmod +x nape
+        sudo mv nape /usr/local/bin/nape
+
+    - name: Verify NAPE installation
+      shell: bash
+      run: |
+        set -euo pipefail
+
+        command -v nape
+        nape --help || true
