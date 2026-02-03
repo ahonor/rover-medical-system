@@ -5,7 +5,7 @@ The Rover Medical demo for how an Assured Release happens in thin slices over ti
 
 ## Release 1
 
-Ensure that after the ```nape start collect ...``` command, the below ```nape collect evidence ...``` is the only command that exists in the [systems-cicd.yml](.github/workflows/system-cdicd.yml):
+Ensure that after the ```nape start collect ...``` command, the below ```nape collect evidence ...``` is the only command that exists in the [systems-cicd.yml](.github/workflows/system-cicd.yml):
 
 ```bash
           echo "--- Release 1 - Evidence Collection --- "
