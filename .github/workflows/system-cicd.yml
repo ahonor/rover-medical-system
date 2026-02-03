@@ -144,12 +144,8 @@ jobs:
           --file-path "rover-cloud/cloud-config.yaml"
 
           nape collect evidence \
-          --control-activity "rover-cloud" \
-          --file-path "rover-cloud/soc1-report-analysis.json"
-
-          nape collect evidence \
           --control-activity "exa-doo-dc" \
-          --file-path "exa-doo-dc/soc1-report-analysis.yaml"
+          --file-path "exa-doo-dc/soc1-report-analysis.json"
 
           nape collect report
 
