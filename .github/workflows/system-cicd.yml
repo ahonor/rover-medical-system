@@ -63,7 +63,7 @@ jobs:
 
 
           # Run the playbook from the evidence collection repo
-          ansible-playbook -vvvv \
+          ansible-playbook -vvv \
             rover-medical-evidence-collection/ansible/playbooks/collect-evidence.yml \
             -e "release=${RELEASE}" \
             -e "rover_system_root=${GITHUB_WORKSPACE}"
