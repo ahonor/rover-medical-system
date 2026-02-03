@@ -35,11 +35,11 @@ runs:
           exit 1
         fi
 
-        # Optional: enforce numeric only (uncomment if desired)
-        # if ! [[ "${RELEASE_NUM}" =~ ^[0-9]+$ ]]; then
-        #   echo "Invalid RELEASE number: ${RELEASE_NUM}"
-        #   exit 1
-        # fi
+        # Enforce numeric only (uncomment if desired)
+         if ! [[ "${RELEASE_NUM}" =~ ^[0-9]+$ ]]; then
+           echo "Invalid RELEASE number, the release number can only be a number: ${RELEASE_NUM}"
+           exit 1
+         fi
 
         RELEASE_VALUE="release-${RELEASE_NUM}"
 

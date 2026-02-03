@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
     inputs:
       release:
-        description: "Demo release to run (release-1, release-2, release-3...)"
+        description: "Demo release to run (release-1, release-2, release-3, release-4)"
         required: false
         default: "release-1"
 
@@ -61,15 +61,11 @@ jobs:
 
           export ANSIBLE_CONFIG="${GITHUB_WORKSPACE}/rover-medical-evidence-collection/ansible/ansible.cfg"
 
-
           # Run the playbook from the evidence collection repo
-          ansible-playbook -vvv \
+          ansible-playbook \
             rover-medical-evidence-collection/ansible/playbooks/collect-evidence.yml \
             -e "release=${RELEASE}" \
             -e "rover_system_root=${GITHUB_WORKSPACE}"
-
-          echo "=== Workspace top level ==="
-          tree -L 8 "${GITHUB_WORKSPACE}"
 
       - name: NAPE - Start Evidence Collection
         shell: bash
