@@ -85,13 +85,72 @@ jobs:
             --procedure-directory "rover-mediical-system/${RELEASE}" \
             --meta system-owner "Bill Bensing"
 
+          echo "--- Release 1 - Evidence Collection --- "
+
           nape collect evidence \
             --control-activity "pet-medicine-app" \
             --file-path "pet-medicine-app/app-config.toml"
 
+
+
+          echo "--- Release 2 - Evidence Collection (Additions) --- "
+
           nape collect evidence \
             --control-activity "pet-medicine-db" \
             --file-path "pet-medicine-db/my-db.ini"
+
+
+
+          echo "--- Release 3 - Evidence Collection (Additions) --- "
+
+          nape collect evidence \
+          --control-activity "pet-medicine-host" \
+          --file-path "pet-medicine-host/stdout-app-user.txt"
+
+          nape collect evidence \
+          --control-activity "pet-medicine-host" \
+          --file-path "pet-medicine-host/stdout-app-user-no-login.txt"
+
+          nape collect evidence \
+          --control-activity "pet-medicine-host" \
+          --file-path "pet-medicine-host/stdout-app-user-not-root.txt"
+
+          nape collect evidence \
+          --control-activity "pet-medicine-host" \
+          --file-path "pet-medicine-host/stdout-db-user.txt"
+          nape collect evidence \
+          --control-activity "pet-medicine-host" \
+          --file-path "pet-medicine-host/stdout-db-user-no-login.txt"
+          nape collect evidence \
+          --control-activity "pet-medicine-host" \
+          --file-path "pet-medicine-host/stdout-db-user-not-root.txt"
+
+          nape collect evidence \
+          --control-activity "pet-medicine-host" \
+          --file-path "pet-medicine-host/stdout-admin-user-not-root.txt"
+
+          nape collect evidence \
+          --control-activity "pet-medicine-host" \
+          --file-path "pet-medicine-host/stdout-command-audit-installed.txt"
+
+
+          nape collect evidence \
+          --control-activity "pet-medicine-host" \
+          --file-path "pet-medicine-host/stdout-admin-user-commands-logged.txt"
+          nape collect evidence \
+          --control-activity "pet-medicine-host" \
+          --file-path "pet-medicine-host/stdout-app-user-commands-logged.txt"
+          nape collect evidence \
+          --control-activity "pet-medicine-host" \
+          --file-path "pet-medicine-host/stdout-db-user-commands-logged.txt"
+
+
+          nape collect evidence \
+          --control-activity "rover-cloud" \
+          --file-path "rover-cloud/cloud-config.yaml"
+          nape collect evidence \
+          --control-activity "rover-cloud" \
+          --file-path "rover-cloud/soc1-report-analysis.json"
 
           nape collect report
 
